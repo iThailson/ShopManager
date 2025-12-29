@@ -614,6 +614,8 @@ class ItemMallEditor:
 
         self.db_conn = db_connection
         self.game_directory = game_directory
+        
+        self.current_lang_folder = "Translate_PT"
 
         self.items_per_page = 12
         self.current_page = 0
@@ -697,8 +699,10 @@ class ItemMallEditor:
 
     def load_item_mappings(self):
         start_time = time.time()
+        self.item_display_names = {}
+        
         data_db_dir = os.path.join(self.game_directory, "data", "db")
-        Translate_dir = os.path.join(self.game_directory, "data", "Translate")
+        Translate_dir = os.path.join(self.game_directory, "data", self.current_lang_folder)
 
         def parse_icon_line(line: str) -> Optional[tuple]:
             parts = line.split("|")
@@ -747,10 +751,17 @@ class ItemMallEditor:
 
         end_time = time.time()
         self.log_message(
-            f"Tempo de leitura dos scripts INI: {end_time - start_time:.4f} segundos",
+            f"Tempo de leitura dos scripts INI ({self.current_lang_folder}): {end_time - start_time:.4f} segundos",
             level="INFO",
             source="DB",
         )
+
+    def change_language(self, folder_name):
+        """Troca a pasta de tradução e recarrega os itens."""
+        self.current_lang_folder = folder_name
+        self.log_message(f"Idioma alterado para pasta: {folder_name}", level="INFO", source="UI")
+        self.load_item_mappings()
+        self.load_items_from_db()
 
     def load_item_icon(
         self, icon_name: str, item_id: int
@@ -1088,7 +1099,26 @@ class ItemMallEditor:
             label="📜 Mostrar Log", command=self.log_console.create_log_window
         )
 
+        langmenu = tk.Menu(
+            menubar,
+            tearoff=0,
+            bg="#2C3E50",
+            fg="#ECF0F1",
+            font=("Tahoma", 11),
+            activebackground="#F39C12",
+            activeforeground="#FFF",
+            relief="flat",
+            bd=1,
+        )
+        langmenu.add_command(label="🇧🇷 Português", command=lambda: self.change_language("Translate_PT"))
+        langmenu.add_command(label="🇺🇸 Inglês", command=lambda: self.change_language("Translate_EN"))
+        langmenu.add_command(label="🇪🇸 Espanhol", command=lambda: self.change_language("Translate"))
+        langmenu.add_command(label="🇫🇷 Francês", command=lambda: self.change_language("Translate_FR"))
+        langmenu.add_command(label="🇩🇪 Alemão", command=lambda: self.change_language("Translate_DE"))
+
         menubar.add_cascade(label="📚 MENU", menu=filemenu)
+        menubar.add_cascade(label="🌐 IDIOMA", menu=langmenu)
+        
         self.root.config(menu=menubar)
 
         topbar = tk.Frame(self.root, bg="#2C3E50", relief="flat", bd=0)
