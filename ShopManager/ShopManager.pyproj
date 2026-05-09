@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bdb58fc9-32e1-4dcf-ad7b-435e225297c0</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ShopManager.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ShopManager.py" />
+    <Compile Include="main.py" />
+    <Compile Include="assets\__init__.py" />
+    <Compile Include="assets\app\__init__.py" />
+    <Compile Include="assets\app\data.py" />
+    <Compile Include="assets\app\dialogs.py" />
+    <Compile Include="assets\app\main_app.py" />
+    <Compile Include="assets\app\models.py" />
+    <Compile Include="assets\app\paths.py" />
+    <Compile Include="assets\app\settings.py" />
+    <Compile Include="assets\app\shop_window.py" />
+    <Compile Include="assets\app\skin.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\ui\*.xml" />
+    <Content Include="assets\ui\*.dds" />
+    <Content Include="assets\ui\.cache\*.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
